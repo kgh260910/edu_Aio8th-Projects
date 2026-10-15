@@ -1,7 +1,7 @@
 import bluetooth, time
 from machine import Pin, PWM, Timer
 
-NAME = "CAM-DW502-이름"                         # ★ 내 이름으로 바꾼다 (예: CAM-DW502-홍길동, 한글 5글자까지)
+NAME = "CAM-DW502-김건희"           # ★ 내 이름으로 바꾼다 (예: CAM-DW502-홍길동, 한글 5글자까지)
 btn = Pin(0, Pin.IN, Pin.PULL_UP)               # 누르면 0
 flash = PWM(Pin(4), freq=1000, duty=0)          # 플래시 밝기 0~1023 (직시 금지)
 red = Pin(33, Pin.OUT, value=1)                 # 빨간 LED: 0 이 켜짐
@@ -23,6 +23,8 @@ command = ""                                    # 폰이 보낸 글자를 적어
 btn_last = 1
 flag_10ms = False
 isr_cnt = 0
+
+
 
 def make_payload(name):
     n = name.encode()
