@@ -13,11 +13,11 @@ for ssid, bssid, channel, rssi, auth, hidden in found:
         name = ssid.decode() or "(숨김)"
     except UnicodeError:                        # 옛 공유기의 특수한 이름은 글자로 못 바꾼다
         name = "(읽을 수 없는 이름)"
-    kind = AUTH[auth] if auth < len(AUTH) else str(auth)
-    print("%-22s 채널 %2d  신호 %4d dBm  %s" % (name, channel, rssi, kind))
+    kind = AUTH[auth] if auth < len(AUTH) else str(auth) 
+    print("%-22s 채널 %2d  신호 %4d dBm  %s" % (name, channel, rssi, kind)) 
                                               #s : string(문자), d : decimal(숫자)
+
 print("총", len(found), "개를 찾았습니다")
-print("가장 강한 와이파이: ", found(0))
 wlan.active(False)
 
 # ⭐ 도전: 신호가 가장 센 와이파이 이름만 한 줄로 찍어 보자. (힌트: found[0])

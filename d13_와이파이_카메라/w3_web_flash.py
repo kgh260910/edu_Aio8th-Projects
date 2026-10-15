@@ -1,8 +1,8 @@
 import network, socket, time
 from machine import Pin, PWM
 
-SSID = "여기에_와이파이_이름"                   # ★ 화면에 안내된 와이파이 이름으로 바꾼다
-PASSWORD = "여기에_비밀번호"                    # ★ 화면에 안내된 비밀번호로 바꾼다
+SSID = "DW502iptime2G"                   # ★ 화면에 안내된 와이파이 이름으로 바꾼다
+PASSWORD = "dw502502"                    # ★ 화면에 안내된 비밀번호로 바꾼다
 BRIGHT = 60                                     # 약한 밝기 (직시 금지)
 
 flash = PWM(Pin(4), freq=1000, duty=0)
