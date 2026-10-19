@@ -7,15 +7,15 @@ try:
     while True:
         M1_motor.duty(0)
         print("0")
-        time.sleep(2)
+        time.sleep(2)     # 2초 꺼짐 유지
         
         M1_motor.duty(100)
         print("100")
-        time.sleep(1)
+        time.sleep(1)     # 1초 duty(100) 유지
         
         M1_motor.duty(200)
         print("200")
-        time.sleep(2)
+        time.sleep(2)     # 2초 duty(200) 유지
 
 except KeyboardInterrupt:
     M1_motor.deinit()

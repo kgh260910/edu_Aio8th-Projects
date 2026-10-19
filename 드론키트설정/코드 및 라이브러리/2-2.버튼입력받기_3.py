@@ -2,7 +2,8 @@ from machine import Pin
 import time
 
 key = Pin(0, Pin.IN, Pin.PULL_UP)
-prev_key = key.value() 
+prev_key = key.value()
+cnt = 0
 
 try:
     while True:
@@ -11,6 +12,9 @@ try:
             prev_key = curr_key
             if curr_key == 0:
                 print("버튼 눌림",curr_key)
+            else:
+                cnt += 1
+                print("버튼 회복",cnt)
             time.sleep(0.1)
 
 except KeyboardInterrupt:

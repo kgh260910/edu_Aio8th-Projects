@@ -11,6 +11,7 @@ try:
             prev_key = curr_key
             print("버튼 눌림",curr_key)
             time.sleep(0.1)
+            
 
 except KeyboardInterrupt:
     print("코드를 종료합니다.")
