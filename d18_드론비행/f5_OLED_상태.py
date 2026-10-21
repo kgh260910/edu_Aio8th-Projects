@@ -8,7 +8,6 @@ i2c = SoftI2C(sda=Pin(43), scl=Pin(44))
 oled = SSD1306_I2C(128, 64, i2c)
 
 adc = ADC(Pin(2))
-adc.atten(ADC.ATTN_11DB)
 
 while True:
     voltage = adc.read() / 4095 * 5.02 * 0.96     # 교재 2-3 의 환산식
