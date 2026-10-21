@@ -1,10 +1,11 @@
 # main_비행_앱 — 새 파이드론 조종기 앱용 코드. main_비행(교재 3-3)에 '배터리 전압을 폰으로 알려 주기' 한 가지를 더했다.
 # 이 폴더의 main.py 를 보드에 올린다. 프로펠러를 단 채일 때는 강사가 "됐다"고 하기 전에 배터리를 꽂지 않는다.
 import bluetooth, ble_simple_peripheral, time
-from machine import Pin, ADC
+from machine import Pin, ADC, SoftI2C
+from ssd1306 import SSD1306_I2C
 import drone
 
-NAME = 'pyD_01'   # ← 내 번호로 바꾼다. 8글자 이하
+NAME = 'pyD_01'   # ← 내 번호로 바꾼다. 영문·숫자 8글자 이하
 
 ble = bluetooth.BLE()
 p = ble_simple_peripheral.BLESimplePeripheral(ble, name=NAME)
@@ -12,6 +13,9 @@ p = ble_simple_peripheral.BLESimplePeripheral(ble, name=NAME)
 d = drone.DRONE(flightmode=1, debug=0)
 
 adc = ADC(Pin(2))                       # 배터리 전압을 읽는 핀 (교재 2-3, f5_OLED_상태.py 와 같다)
+
+oled = SSD1306_I2C(128, 64, SoftI2C(sda=Pin(43), scl=Pin(44)))   # 작은 화면(OLED), f5_OLED_상태.py 와 같다
+SHOW_NAME = NAME if all(ord(c) < 128 for c in NAME) else 'DRONE'  # 작은 화면 글꼴은 영문·숫자만 그린다
 
 def read_voltage():
     return adc.read() / 4095 * 5.02 * 0.96     # 교재 2-3 의 환산식
@@ -60,7 +64,13 @@ def on_rx(read):
 do_calibration()
 p.on_write(on_rx)
 
-while True:                              # 1초마다 배터리 전압을 폰에 알린다 (예: V3.92)
+while True:                              # 1초마다 배터리 전압을 폰에 알리고(예: V3.92), 작은 화면에도 보여 준다
+    volt = read_voltage()
     if p.is_connected():
-        p.send("V%.2f" % read_voltage())
+        p.send("V%.2f" % volt)
+    oled.fill(0)
+    oled.text(SHOW_NAME, 0, 0)
+    oled.text("phone: " + ("ON" if p.is_connected() else "wait"), 0, 20)
+    oled.text("batt: %.2f V" % volt, 0, 36)
+    oled.show()
     time.sleep_ms(1000)

@@ -34,6 +34,17 @@ def advertising_payload(limited_disc=False, br_edr=False, name=None, services=No
     )
 
     if name:
+        # 이름은 글자 수가 아니라 바이트 수로 센다: 영문·숫자 1글자 = 1칸, 한글 1글자 = 3칸
+        if isinstance(name, str):
+            name = name.encode()
+        if len(name) > 8:  # 광고 그릇에 이름이 들어갈 자리는 8칸. 넘으면 글자 끝에서 자른다
+            name = name[:8]
+            i = len(name) - 1
+            while i > 0 and (name[i] & 0xC0) == 0x80:
+                i -= 1
+            need = 1 if name[i] < 0x80 else (2 if name[i] < 0xE0 else (3 if name[i] < 0xF0 else 4))
+            if len(name) - i < need:
+                name = name[:i]
         _append(_ADV_TYPE_NAME, name)
 
     if services:
