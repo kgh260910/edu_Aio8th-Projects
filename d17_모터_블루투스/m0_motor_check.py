@@ -25,7 +25,3 @@ except KeyboardInterrupt:
 
 set_duty(0, 0, 0, 0)
 print("모터 꺼짐")
-M1_motor.deinit()
-M2_motor.deinit()
-M3_motor.deinit()
-M4_motor.deinit()
