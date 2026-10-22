@@ -8,6 +8,8 @@ d = drone.DRONE(flightmode=1, debug=0)
 
 def do_calibration():
     green_led = Pin(42, Pin.OUT)
+    if d.read_calibrated():
+        print("이미 보정된 보드 (RST 직후에만 LED 깜빡임)")
     while True:
         print(d.read_cal_data())
         if d.read_calibrated():
