@@ -1,9 +1,10 @@
 # D18 드론 비행 — 앱으로 읽고, 보정하고, 날린다 (교재 3장)
 
 보드는 **pyDrone 펌웨어(v1.18)** 상태여야 한다. 토니 쉘 첫 줄에 `01Studio PYDRONE`, `import drone` 이 되면 맞다.
-보드 쉘 첫 줄이 `Generic ESP32S3` (v1.29) 이면 아래 두 단계를 먼저 한다. 강사가 도와 주며, 이 폴더 안 `펌웨어` 폴더의 `pyDrone.bin` 을 쓴다.
-1. 토니 [옵션] → [인터프리터] → [Install or update MicroPython] 에서 `pyDrone.bin` 을 설치하고 RST 를 누른다 (교재 44~48쪽).
-2. 토니를 끄고 설정 파일 `configuration.ini` 의 `[ESP32]` 아래 `dtr = False` · `rts = False` 두 줄을 지운 뒤 저장한다 (두 줄이 없어야 pyDrone 에 연결되고 파일 목록이 정상으로 읽힌다).
+보드 쉘 첫 줄이 `Generic ESP32S3` (v1.29) 이면 아래 세 단계를 먼저 한다 (슬라이드 1교시 '확인 ①' 이후 장에 그림이 있다). 굽는 파일은 이 폴더 안 `펌웨어` 폴더의 `pyDrone_0118.bin` 이다 (이름 끝 0118 = 펌웨어 v1.18).
+1. 토니 안의 굽기 도구 esptool 을 4.8.1 로 맞춘다 (컴퓨터마다 한 번). 토니 5.0.0 과 함께 깔린 esptool 5.x 는 토니가 파일을 확인하는 명령을 몰라서, 파일을 골라도 variant 칸이 비고 [Install] 이 꺼진다. 토니를 닫고 명령 프롬프트에서 `"%LOCALAPPDATA%\Programs\Thonny\python.exe" -m pip install esptool==4.8.1` 을 실행한다.
+2. 보드를 부트로더 모드로 넣고(KEY 를 누른 채 RST 한 번, KEY 뗌) 토니 [Tools] → [Options] → [Interpreter] → [Install or update MicroPython] 에서 `pyDrone_0118.bin` 을 설치한 뒤 RST 를 누른다 (교재 44~48쪽).
+3. 토니를 끄고 설정 파일 `configuration.ini` 의 `[ESP32]` 아래 `dtr = False` · `rts = False` 두 줄이 있으면 지운 뒤 저장한다 (두 줄이 없어야 pyDrone 에 연결되고 파일 목록이 정상으로 읽힌다).
 
 프로펠러는 **3교시까지 빼 둔다.** 코드를 고치거나 파일을 올릴 때는 언제나 프로펠러를 뺀 상태에서 한다.
 
