@@ -15,9 +15,10 @@ cal = d.read_cal_data()              # 끝난 값은 한 번만 읽는다
 while True:
     s = d.read_states()              # 앞 세 칸 = roll, pitch, yaw 각도 x100
     oled.fill(0)
-    oled.text("cal: no change", 0, 0)
+    oled.text("cal : no change", 0, 0)
     oled.text("%d %d %d" % cal, 0, 10)
-    oled.text("roll  %6.1f" % (s[0] / 100), 0, 32)
-    oled.text("pitch %6.1f" % (s[1] / 100), 0, 44)
+    oled.text("tilt: changes", 0, 28)
+    oled.text("roll  %6.1f" % (s[0] / 100), 0, 38)
+    oled.text("pitch %6.1f" % (s[1] / 100), 0, 48)
     oled.show()
     time.sleep_ms(100)
