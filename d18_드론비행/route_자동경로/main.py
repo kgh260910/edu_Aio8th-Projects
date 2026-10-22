@@ -4,7 +4,7 @@ import bluetooth, ble_simple_peripheral, time
 from machine import Pin
 import drone
 
-NAME = 'pyD_01'   # ← 내 번호로 바꾼다. 8글자 이하. 폰 앱의 [멈춤]을 받으려고 블루투스를 켠다.
+NAME = 'pyD_01'   # ← 내 번호로 바꾼다. 영문·숫자 8글자 이하. 폰 앱의 [멈춤]을 받으려고 블루투스를 켠다.
 
 ble = bluetooth.BLE()
 p = ble_simple_peripheral.BLESimplePeripheral(ble, name=NAME)

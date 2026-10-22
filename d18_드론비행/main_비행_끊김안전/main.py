@@ -5,7 +5,7 @@ import bluetooth, ble_simple_peripheral, time
 from machine import Pin
 import drone
 
-NAME = 'pyD_01'        # ← 내 번호로 바꾼다. 8글자 이하
+NAME = 'pyD_01'        # ← 내 번호로 바꾼다. 영문·숫자 8글자 이하
 LOST_MS = 500          # 이 시간(ms) 동안 신호가 없으면 착륙
 
 ble = bluetooth.BLE()
