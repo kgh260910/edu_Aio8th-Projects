@@ -1,7 +1,7 @@
 # D18 드론 비행 — 앱으로 읽고, 보정하고, 날린다 (교재 3장)
 
 보드는 **pyDrone 펌웨어(v1.18)** 상태여야 한다. 토니 쉘 첫 줄에 `01Studio PYDRONE`, `import drone` 이 되면 맞다.
-보드 쉘 첫 줄이 `Generic ESP32S3` (v1.29) 이면 아래 두 단계를 먼저 한다. 강사가 도와 주며, 이 폴더의 `pyDrone.bin` 을 쓴다.
+보드 쉘 첫 줄이 `Generic ESP32S3` (v1.29) 이면 아래 두 단계를 먼저 한다. 강사가 도와 주며, 이 폴더 안 `펌웨어` 폴더의 `pyDrone.bin` 을 쓴다.
 1. 토니 [옵션] → [인터프리터] → [Install or update MicroPython] 에서 `pyDrone.bin` 을 설치하고 RST 를 누른다 (교재 44~48쪽).
 2. 토니를 끄고 설정 파일 `configuration.ini` 의 `[ESP32]` 아래 `dtr = False` · `rts = False` 두 줄을 지운 뒤 저장한다 (두 줄이 없어야 pyDrone 에 연결되고 파일 목록이 정상으로 읽힌다).
 
