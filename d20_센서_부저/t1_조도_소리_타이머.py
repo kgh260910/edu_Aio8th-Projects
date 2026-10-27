@@ -27,12 +27,12 @@ def tick(t):                     # 1 ms 마다 저절로 불린다
         flag_500 = True
 
 def light_level(value):          # s1 과 같은 함수
-    level = (value - LIGHT_MIN) * LEVELS // (LIGHT_MAX - LIGHT_MIN) + 1
-    return max(1, min(LEVELS, level))
+    level = (value - LIGHT_MIN) * LEVELS // (LIGHT_MAX - LIGHT_MIN)
+    return max(0, min(LEVELS - 1, level))
 
 beep_on = False                  # 지금 삑 울리는 중인가
 value = 0
-level = 1
+level = 0
 duty = DUTY_TABLE[0]
 last_look = 0                    # 밝기를 마지막으로 본 ms
 look_gap = 0                     # 밝기를 다시 보기까지 걸린 ms
@@ -52,7 +52,7 @@ try:
             flag_100 = False
             value = cds_sensor.read()
             level = light_level(value)
-            duty = DUTY_TABLE[level - 1]
+            duty = DUTY_TABLE[level]
             look_gap = ms - last_look
             last_look = ms
         if flag_500:                             # 500 ms : 삑을 켜고 끄고, 쉘에 찍는다

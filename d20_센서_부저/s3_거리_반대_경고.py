@@ -11,7 +11,7 @@ trigger.value(0)
 NEAR_CM = 5                      # 손을 가장 가까이 둘 때의 거리 (가장 작은 소리)
 WARN_CM = 60                     # 이 거리보다 멀면 삐~ 하고 길게 울린다 (경고)
 LEVELS = 20                      # 소리 크기를 몇 단계로 나눌까
-# 단계 1~20 -> duty : 약 1 % (10) 에서 50 % (512) 까지 (s2 와 같은 표)
+# 단계 0~19 -> duty : 약 1 % (10) 에서 50 % (512) 까지 (s2 와 같은 표)
 DUTY_TABLE = [10, 12, 15, 19, 23, 28, 35, 43, 52, 65, 79, 98, 120, 148, 182, 224, 275, 338, 416, 512]
 BEEP_FREQ = 880                  # 삑 소리의 높이
 WARN_FREQ = 1760                 # 경고 삐~ 소리의 높이 : 삑보다 한 옥타브 높다
@@ -37,9 +37,9 @@ def get_distance_cm():           # 교재 5-3 _2 와 거의 같은 함수 : 못 
     return max(2, distance_cm)
 
 def distance_level(cm):
-    # 가까울수록 작은 단계 (s2 와 반대) : NEAR_CM 이하 -> 1, WARN_CM 에 가까울수록 -> 20
-    level = (cm - NEAR_CM) * LEVELS // (WARN_CM - NEAR_CM) + 1
-    return max(1, min(LEVELS, int(level)))
+    # 가까울수록 작은 단계 (s2 와 반대) : NEAR_CM 이하 -> 0, WARN_CM 에 가까울수록 -> 19
+    level = (cm - NEAR_CM) * LEVELS // (WARN_CM - NEAR_CM)
+    return max(0, min(LEVELS - 1, int(level)))
 
 def beep(duty):
     buzzer.freq(BEEP_FREQ)
@@ -69,7 +69,7 @@ try:
             warning()
         else:                                    # 60 cm 안쪽 -> 가까울수록 작은 삑
             level = distance_level(cm)
-            duty = DUTY_TABLE[level - 1]
+            duty = DUTY_TABLE[level]
             print("거리", int(cm), "cm -> 단계", level, "-> duty", duty)
             beep(duty)
 except KeyboardInterrupt:

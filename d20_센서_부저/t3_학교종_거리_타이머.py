@@ -58,16 +58,16 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
         return 0
 
 def distance_level(cm):
-    # 가까울수록 작은 단계 (t2 와 반대) : NEAR_CM 이하 -> 1, FAR_CM 이상 -> 20
-    level = (cm - NEAR_CM) * LEVELS // (FAR_CM - NEAR_CM) + 1
-    return max(1, min(LEVELS, int(level)))
+    # 가까울수록 작은 단계 (t2 와 반대) : NEAR_CM 이하 -> 0, FAR_CM 이상 -> 19
+    level = (cm - NEAR_CM) * LEVELS // (FAR_CM - NEAR_CM)
+    return max(0, min(LEVELS - 1, int(level)))
 
 idx = 0                          # 지금 몇 번째 음인가
 note_start = 0                   # 이 음이 시작한 ms
 measured = False                 # 이 음에서 거리를 이미 쟀는가
 cm = 0
-level = 10
-duty = DUTY_TABLE[level - 1]
+level = 9
+duty = DUTY_TABLE[level]
 buzzer.freq(NOTE_HZ[school_bell[0][0]])
 
 tmr = Timer(0)
@@ -98,7 +98,7 @@ try:
                 cm = get_distance_cm()
                 if cm != 0:                      # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
                     level = distance_level(cm)
-                    duty = DUTY_TABLE[level - 1]
+                    duty = DUTY_TABLE[level]
         if flag_500:                             # 500 ms : 어디쯤인지 쉘에 찍는다
             flag_500 = False
             print("거리", int(cm), "cm -> 단계", level, "-> duty", duty, "|", idx + 1, "/", len(school_bell), school_bell[idx][0])

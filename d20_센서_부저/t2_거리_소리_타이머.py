@@ -43,13 +43,13 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
         return 0
 
 def distance_level(cm):          # s2 와 같은 함수
-    level = (FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM) + 1
-    return max(1, min(LEVELS, int(level)))
+    level = (FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM)
+    return max(0, min(LEVELS - 1, int(level)))
 
 beep_on = False
 cm = 0
-level = 10
-duty = DUTY_TABLE[level - 1]
+level = 9
+duty = DUTY_TABLE[level]
 last_look = 0                    # 거리를 마지막으로 본 ms
 look_gap = 0                     # 거리를 다시 보기까지 걸린 ms
 
@@ -69,7 +69,7 @@ try:
             cm = get_distance_cm()
             if cm != 0:                          # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
                 level = distance_level(cm)
-                duty = DUTY_TABLE[level - 1]
+                duty = DUTY_TABLE[level]
             look_gap = ms - last_look
             last_look = ms
         if flag_500:                             # 500 ms : 삑을 켜고 끄고, 쉘에 찍는다
