@@ -22,17 +22,18 @@ FAR_LIMIT = 2                    # 멀다고 연속 몇 번 나오면 경고를 
 BEEP_MS = 500
 REST_MS = 500
 
-def get_distance_cm():           # 교재 5-3 _2 와 거의 같은 함수 : 못 읽거나 200 cm 보다 멀면 999
+def get_distance_cm():           # 교재 5-3 _2 와 거의 같은 함수 : 못 읽거나 약 100 cm 보다 멀면 999
     trigger.value(0)
     time.sleep_us(5)
     trigger.value(1)
     time.sleep_us(10)
     trigger.value(0)
-    pulse_time = machine.time_pulse_us(echo, 1, 30000)
+    # 6000 µs (약 100 cm) 까지만 기다린다 : 오래 기다리면 그동안 타이머 틱을 놓친다 (교재는 30000)
+    pulse_time = machine.time_pulse_us(echo, 1, 6000)
     if pulse_time < 0:           # 반사가 돌아오지 않았다 = 앞이 비었다 = 아주 멀다
         return 999
     distance_cm = (pulse_time / 2) / 29.1
-    if distance_cm > 200:
+    if distance_cm > 100:
         return 999
     if distance_cm < 2:
         return 2

@@ -29,17 +29,13 @@ def beep(duty):
     buzzer.duty(0)
     time.sleep_ms(REST_MS)       # 쉬는 동안에도 코드는 여기서 멈춰 있다
 
-last_look = time.ticks_ms()      # 센서를 마지막으로 본 시각
 
 try:
     while True:
         value = cds_sensor.read()
         level = light_level(value)
         duty = DUTY_TABLE[level]
-        now = time.ticks_ms()
-        gap = time.ticks_diff(now, last_look)    # 센서를 다시 보기까지 걸린 시간
-        last_look = now
-        print("조도", value, "-> 단계", level, "-> duty", duty, "| 센서를 다시 보기까지", gap, "ms")
+        print("조도", value, "-> 단계", level, "-> duty", duty)
         beep(duty)
 except KeyboardInterrupt:
     pass

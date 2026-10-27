@@ -45,7 +45,6 @@ def beep(duty):
     time.sleep_ms(REST_MS)
 
 level = 9                        # 처음 단계 (못 읽어도 소리 나게)
-last_look = time.ticks_ms()
 
 try:
     while True:
@@ -53,10 +52,7 @@ try:
         if cm != 0:                              # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
             level = distance_level(cm)
         duty = DUTY_TABLE[level]
-        now = time.ticks_ms()
-        gap = time.ticks_diff(now, last_look)
-        last_look = now
-        print("거리", int(cm), "cm -> 단계", level, "-> duty", duty, "| 센서를 다시 보기까지", gap, "ms")
+        print("거리", int(cm), "cm -> 단계", level, "-> duty", duty)
         beep(duty)
 except KeyboardInterrupt:
     pass

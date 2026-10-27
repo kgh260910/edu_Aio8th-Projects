@@ -38,8 +38,6 @@ beep_on = False                  # 지금 삑 울리는 중인가
 value = 0
 level = 0
 duty = DUTY_TABLE[0]
-last_look = 0                    # 밝기를 마지막으로 본 ms
-look_gap = 0                     # 밝기를 다시 보기까지 걸린 ms
 
 tmr = Timer(0)
 tmr.init(period=1, mode=Timer.PERIODIC, callback=tick)
@@ -57,12 +55,10 @@ try:
             value = cds_sensor.read()
             level = light_level(value)
             duty = DUTY_TABLE[level]
-            look_gap = ms - last_look
-            last_look = ms
         if flag_500:                             # 500 ms : 삑을 켜고 끄고, 쉘에 찍는다
             flag_500 = False
             beep_on = not beep_on
-            print("조도", value, "-> 단계", level, "-> duty", duty, "| 센서를 다시 보기까지", look_gap, "ms")
+            print("조도", value, "-> 단계", level, "-> duty", duty)
 except KeyboardInterrupt:
     pass
 finally:

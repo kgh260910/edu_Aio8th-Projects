@@ -35,7 +35,8 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
     trigger.value(1)
     time.sleep_us(10)
     trigger.value(0)
-    pulse_time = machine.time_pulse_us(echo, 1, 30000)
+    # 6000 µs (약 100 cm) 까지만 기다린다 : 오래 기다리면 그동안 타이머 틱을 놓친다 (교재는 30000)
+    pulse_time = machine.time_pulse_us(echo, 1, 6000)
     distance_cm = (pulse_time / 2) / 29.1
     if 2 <= distance_cm <= 200:
         return distance_cm
@@ -54,8 +55,6 @@ beep_on = False
 cm = 0
 level = 9
 duty = DUTY_TABLE[level]
-last_look = 0                    # 거리를 마지막으로 본 ms
-look_gap = 0                     # 거리를 다시 보기까지 걸린 ms
 
 tmr = Timer(0)
 tmr.init(period=1, mode=Timer.PERIODIC, callback=tick)
@@ -74,12 +73,10 @@ try:
             if cm != 0:                          # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
                 level = distance_level(cm)
                 duty = DUTY_TABLE[level]
-            look_gap = ms - last_look
-            last_look = ms
         if flag_500:                             # 500 ms : 삑을 켜고 끄고, 쉘에 찍는다
             flag_500 = False
             beep_on = not beep_on
-            print("거리", int(cm), "cm -> 단계", level, "-> duty", duty, "| 센서를 다시 보기까지", look_gap, "ms")
+            print("거리", int(cm), "cm -> 단계", level, "-> duty", duty)
 except KeyboardInterrupt:
     pass
 finally:

@@ -50,7 +50,8 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
     trigger.value(1)
     time.sleep_us(10)
     trigger.value(0)
-    pulse_time = machine.time_pulse_us(echo, 1, 30000)
+    # 6000 µs (약 100 cm) 까지만 기다린다 : 오래 기다리면 그동안 타이머 틱을 놓친다 (교재는 30000)
+    pulse_time = machine.time_pulse_us(echo, 1, 6000)
     distance_cm = (pulse_time / 2) / 29.1
     if 2 <= distance_cm <= 200:
         return distance_cm
