@@ -31,8 +31,12 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
 
 def distance_level(cm):
     # 가까울수록 큰 단계 : NEAR_CM 이하 -> 19, FAR_CM 이상 -> 0
-    level = (FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM)
-    return max(0, min(LEVELS - 1, int(level)))
+    level = int((FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM))
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 def beep(duty):
     buzzer.duty(duty)

@@ -43,8 +43,12 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
         return 0
 
 def distance_level(cm):          # s2 와 같은 함수
-    level = (FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM)
-    return max(0, min(LEVELS - 1, int(level)))
+    level = int((FAR_CM - cm) * LEVELS // (FAR_CM - NEAR_CM))
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 beep_on = False
 cm = 0

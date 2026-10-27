@@ -34,12 +34,18 @@ def get_distance_cm():           # 교재 5-3 _2 와 거의 같은 함수 : 못 
     distance_cm = (pulse_time / 2) / 29.1
     if distance_cm > 200:
         return 999
-    return max(2, distance_cm)
+    if distance_cm < 2:
+        return 2
+    return distance_cm
 
 def distance_level(cm):
     # 가까울수록 작은 단계 (s2 와 반대) : NEAR_CM 이하 -> 0, WARN_CM 에 가까울수록 -> 19
-    level = (cm - NEAR_CM) * LEVELS // (WARN_CM - NEAR_CM)
-    return max(0, min(LEVELS - 1, int(level)))
+    level = int((cm - NEAR_CM) * LEVELS // (WARN_CM - NEAR_CM))
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 def beep(duty):
     buzzer.freq(BEEP_FREQ)
@@ -65,7 +71,7 @@ try:
         else:
             far_count = 0
         if far_count >= FAR_LIMIT:               # 60 cm 보다 멀다 -> 삐~
-            print("거리", int(min(cm, 999)), "cm -> 60 cm 보다 멀다 : 삐~")
+            print("거리", int(cm), "cm -> 60 cm 보다 멀다 : 삐~")
             warning()
         else:                                    # 60 cm 안쪽 -> 가까울수록 작은 삑
             level = distance_level(cm)

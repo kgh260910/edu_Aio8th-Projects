@@ -28,7 +28,11 @@ def tick(t):                     # 1 ms 마다 저절로 불린다
 
 def light_level(value):          # s1 과 같은 함수
     level = (value - LIGHT_MIN) * LEVELS // (LIGHT_MAX - LIGHT_MIN)
-    return max(0, min(LEVELS - 1, level))
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 beep_on = False                  # 지금 삑 울리는 중인가
 value = 0

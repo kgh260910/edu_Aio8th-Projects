@@ -59,8 +59,12 @@ def get_distance_cm():           # 교재 5-3 _2 와 같은 함수 : 못 읽으�
 
 def distance_level(cm):
     # 가까울수록 작은 단계 (t2 와 반대) : NEAR_CM 이하 -> 0, FAR_CM 이상 -> 19
-    level = (cm - NEAR_CM) * LEVELS // (FAR_CM - NEAR_CM)
-    return max(0, min(LEVELS - 1, int(level)))
+    level = int((cm - NEAR_CM) * LEVELS // (FAR_CM - NEAR_CM))
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 idx = 0                          # 지금 몇 번째 음인가
 note_start = 0                   # 이 음이 시작한 ms
@@ -81,24 +85,25 @@ try:
             t = ms - note_start                  # 이 음이 시작하고 지난 ms
             if t >= length * EIGHTH_MS:          # 자리가 끝났다 -> 다음 음으로 (끝까지 가면 처음부터 다시)
                 note_start += length * EIGHTH_MS
-                idx = (idx + 1) % len(school_bell)
+                idx = idx + 1
+                if idx >= len(school_bell):      # 곡이 끝났으면 처음부터 다시
+                    idx = 0
                 name, length = school_bell[idx]
                 t = ms - note_start
                 measured = False
                 if NOTE_HZ[name] != 0:
                     buzzer.freq(NOTE_HZ[name])
             left = length * EIGHTH_MS - t        # 이 음이 끝나기까지 남은 ms
-            quiet = name == "쉼" or left <= GAP_MS
-            if quiet:
+            if name == "쉼" or left <= GAP_MS:   # 쉬는 시간이거나 음이 끝나기 직전이면 소리를 끈다
                 buzzer.duty(0)
+                if not measured and (name == "쉼" or left <= GAP_MS - LISTEN_MS):
+                    measured = True              # 소리를 끈 지 60 ms 가 지났다 : 이 음에서 한 번만 잰다
+                    cm = get_distance_cm()
+                    if cm != 0:                  # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
+                        level = distance_level(cm)
+                        duty = DUTY_TABLE[level]
             else:
                 buzzer.duty(duty)
-            if quiet and not measured and (name == "쉼" or left <= GAP_MS - LISTEN_MS):
-                measured = True                  # 소리를 끈 지 60 ms 가 지났다 : 이 음에서 한 번만 잰다
-                cm = get_distance_cm()
-                if cm != 0:                      # 0 은 못 읽은 것 : 이전 단계를 그대로 쓴다
-                    level = distance_level(cm)
-                    duty = DUTY_TABLE[level]
         if flag_500:                             # 500 ms : 어디쯤인지 쉘에 찍는다
             flag_500 = False
             print("거리", int(cm), "cm -> 단계", level, "-> duty", duty, "|", idx + 1, "/", len(school_bell), school_bell[idx][0])

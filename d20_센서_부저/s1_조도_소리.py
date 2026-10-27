@@ -17,7 +17,11 @@ REST_MS = 500                    # 쉬는 시간
 def light_level(value):
     # LIGHT_MIN ~ LIGHT_MAX 사이를 20 칸으로 나눠 몇 번째 칸인지 구한다 (0~19 : 리스트 번호와 같다)
     level = (value - LIGHT_MIN) * LEVELS // (LIGHT_MAX - LIGHT_MIN)
-    return max(0, min(LEVELS - 1, level))        # 범위 밖은 끝 칸으로 맞춘다
+    if level < 0:
+        level = 0
+    if level > LEVELS - 1:
+        level = LEVELS - 1
+    return level
 
 def beep(duty):
     buzzer.duty(duty)            # 켜 두고 BEEP_MS 만큼 기다린다
